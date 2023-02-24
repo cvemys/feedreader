@@ -12,14 +12,18 @@ for feed in feeds.split():
     f = feedparser.parse(feed)
     print("Done", file=sys.stderr)
     for entry in f["entries"]:
-        entries.append(
-            {
-                "published_parsed": entry["published_parsed"],
-                "published": entry["published"],
-                "title": entry["title"],
-                "link": entry["links"][0]["href"],
-            }
-        )
+        try:
+            entries.append(
+                {
+                    "published_parsed": entry["published_parsed"],
+                    "published": entry["published"],
+                    "title": entry["title"],
+                    "link": entry["links"][0]["href"],
+                }
+            )
+        except:
+            continue
+
 tmplt = """
 <html>
     <head>

@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 import sys
+from datetime import datetime
 import feedparser
 import jinja2
 
@@ -35,6 +36,7 @@ tmplt = """
     }
     </style>
     <body>
+        <p> Generated on {{ generated_time }} </p>
         {% for entry in entries %}
         <div>{{ entry["published"] }}<a href={{entry["link"]}}>{{entry["title"]}}</a></div>
         {% endfor %}
@@ -45,6 +47,7 @@ jinja_env = jinja2.Environment()
 template = jinja_env.from_string(tmplt)
 print(
     template.render(
-        entries=sorted(entries, key=lambda x: x["published_parsed"], reverse=True)
+        entries=sorted(entries, key=lambda x: x["published_parsed"], reverse=True),
+        generated_time=str(datetime.now()),
     )
 )
